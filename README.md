@@ -11,22 +11,25 @@
 | 反汇编器 | [Capstone.js](https://github.com/AlexAltea/capstone.js) (WASM) | 把机器码反汇编，用于调试视图精确映射 |
 | 模拟器 | [Unicorn.js](https://github.com/AlexAltea/unicorn.js) (WASM, aarch64 单架构) | 执行 ARM64 机器码 |
 
-## 如何运行（重要）
+## 使用方式
 
-由于加载 `.wasm` 文件需要 HTTP 协议，**不能用 `file://` 直接双击打开**。
-请在本目录启动一个本地 HTTP 服务器：
+### 方式一：直接在线访问（推荐）
+
+已部署到 GitHub Pages，无需安装任何环境，点开即用：
+
+> **https://qiannianhuanxiang.github.io/bbb1/**
+
+首次打开会下载并初始化 WASM 引擎（约 9MB，稍慢属正常），状态栏显示"就绪"后即可使用；之后浏览器会缓存，二次访问很快。手机、电脑均可直接访问。
+
+### 方式二：本地运行（仅开发/调试源码时需要）
+
+如果要从源码本地修改运行，启动一个本地 HTTP 服务器（加载 `.wasm` 需 HTTP 协议，不能用 `file://` 双击打开）：
 
 ```bash
-# 方式一：Python
 python3 -m http.server 8000
-
-# 方式二：Node
-npx http-server -p 8000
 ```
 
-然后浏览器访问 <http://localhost:8000/> 。
-
-首次打开会下载并初始化 WASM 引擎（约 9MB，稍慢属正常），状态栏显示"就绪"后即可使用。
+然后访问 <http://localhost:8000/> 。
 
 ## 目录结构
 
