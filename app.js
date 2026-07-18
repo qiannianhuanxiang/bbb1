@@ -139,6 +139,13 @@ end:
     let v = emu.uc.reg_read_i64(regId(name));
     return typeof v === 'bigint' ? v : BigInt(v);
   }
+  function switchTab(panelClass) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === panelClass));
+    document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.classList.contains(panelClass)));
+    // 切回面板时刷新其内容（隐藏期间 scrollIntoView/行号同步会失效）
+    if (panelClass === 'editor-panel') { updateGutter(); gutter.scrollTop = editor.scrollTop; }
+    else if (panelClass === 'disasm-panel' && emu) { renderDisasm(curPC()); }
+  }
 
   // ============ 引擎初始化 ============
   async function initEngines() {
@@ -200,6 +207,7 @@ end:
     enableRunControls(true);
     refreshUI();
     renderMem(parseAddr(memAddr.value) || CODE_BASE);
+    switchTab('disasm-panel'); // 移动端：加载后跳到反汇编查看生成的指令
   }
 
   function createEmulator(mc, insns) {
@@ -281,6 +289,7 @@ end:
     if (emu.exited) setStatus('ok', '运行结束（exit）');
     else if (pc >= emu.codeBase + emu.codeSize) setStatus('ok', '运行结束（PC 越界）');
     else setStatus('err', '运行暂停（指令上限或异常）');
+    switchTab('regs-panel'); // 移动端：运行后跳到寄存器查看结果变化
   }
 
   function stepOnce() {
@@ -299,6 +308,7 @@ end:
     refreshUI();
     if (isFinished()) setStatus('ok', '执行结束');
     else setStatus('ok', '已单步');
+    switchTab('regs-panel'); // 移动端：单步后跳到寄存器查看变化
   }
 
   function reset() {
@@ -308,6 +318,7 @@ end:
     setStatus('ok', '已重置');
     refreshUI();
     renderMem(parseAddr(memAddr.value) || CODE_BASE);
+    switchTab('disasm-panel');
   }
 
   function handleErr(e) {
@@ -460,6 +471,10 @@ end:
         editor.selectionStart = editor.selectionEnd = s + 4;
         updateGutter();
       }
+    });
+    // 移动端底部 Tab 切换
+    document.querySelectorAll('.tab').forEach(t => {
+      t.addEventListener('click', () => switchTab(t.dataset.tab));
     });
   }
 

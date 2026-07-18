@@ -74,6 +74,14 @@
   </section>
 </main>
 
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-tab="editor-panel">代码</button>
+  <button class="tab" data-tab="regs-panel">寄存器</button>
+  <button class="tab" data-tab="mem-panel">内存</button>
+  <button class="tab" data-tab="disasm-panel">反汇编</button>
+  <button class="tab" data-tab="console-panel">输出</button>
+</nav>
+
 <footer class="hint-bar">
   <span id="footHint">提示：本页面需通过本地 HTTP 服务器打开（在项目目录执行 <code>python3 -m http.server 8000</code> 后访问 http://localhost:8000 ）。加载较慢属正常（初始化 WASM）。</span>
 </footer>
