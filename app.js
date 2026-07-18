@@ -151,10 +151,10 @@ end:
   async function initEngines() {
     setStatus('busy', '加载 WASM 引擎…');
     try {
-      ksMod = await MKeystone({ locateFile: (p) => 'libs/' + p });
+      ksMod = await MKeystone();
       assembler = new ksMod.Keystone(ksMod.ARCH_ARM64, ksMod.MODE_LITTLE_ENDIAN);
 
-      csMod = await MCapstone({ locateFile: (p) => 'libs/' + p });
+      csMod = await MCapstone();
       disassembler = new csMod.Capstone(csMod.ARCH_ARM64, csMod.MODE_ARM);
 
       ucMod = await MUnicorn();
