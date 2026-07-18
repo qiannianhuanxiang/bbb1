@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARM64 汇编运行环境</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="toolbar">
+  <div class="brand">
+    <span class="logo">⌬</span>
+    <span class="title">ARM64 汇编运行环境</span>
+    <span class="subtitle">Keystone · Unicorn WASM</span>
+  </div>
+  <div class="controls">
+    <label class="example-pick">
+      示例：
+      <select id="exampleSelect"></select>
+    </label>
+    <button id="btnLoad" class="btn primary">汇编加载</button>
+    <button id="btnRun" class="btn" disabled>运行</button>
+    <button id="btnStep" class="btn" disabled>单步</button>
+    <button id="btnReset" class="btn" disabled>重置</button>
+  </div>
+  <div class="status">
+    <span id="statusDot" class="dot idle"></span>
+    <span id="statusText">就绪</span>
+  </div>
+</header>
+
+<main class="layout">
+  <section class="panel editor-panel">
+    <div class="panel-head"><span>源代码</span><span class="hint">注释用 // ，每行一条指令</span></div>
+    <div class="editor-wrap">
+      <pre id="gutter" class="gutter" aria-hidden="true"></pre>
+      <textarea id="editor" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+    </div>
+  </section>
+
+  <section class="panel regs-panel">
+    <div class="panel-head"><span>寄存器</span><span class="hint" id="pcHint">PC: —</span></div>
+    <div class="regs-grid" id="regsGrid"></div>
+    <div class="flags">
+      <span class="flag" id="flagN" title="Negative">N</span>
+      <span class="flag" id="flagZ" title="Zero">Z</span>
+      <span class="flag" id="flagC" title="Carry">C</span>
+      <span class="flag" id="flagV" title="Overflow">V</span>
+    </div>
+  </section>
+
+  <section class="panel mem-panel">
+    <div class="panel-head">
+      <span>内存</span>
+      <span class="mem-controls">
+        <input id="memAddr" type="text" placeholder="0x10000" value="0x10000">
+        <button id="btnMemView" class="btn small">查看</button>
+      </span>
+    </div>
+    <pre id="memView" class="mem-view">（输入地址后查看，例如 0x10000）</pre>
+  </section>
+
+  <section class="panel disasm-panel">
+    <div class="panel-head"><span>反汇编 / 执行轨迹</span><span class="hint" id="disasmHint">—</span></div>
+    <pre id="disasmView" class="disasm-view">汇编加载后显示指令列表</pre>
+  </section>
+
+  <section class="panel console-panel">
+    <div class="panel-head"><span>输出控制台</span>
+      <span class="hint">通过 svc #0 + x8 系统调用输出</span>
+      <button id="btnClearOut" class="btn small ghost">清空</button>
+    </div>
+    <pre id="consoleView" class="console-view"></pre>
+  </section>
+</main>
+
+<footer class="hint-bar">
+  <span id="footHint">提示：本页面需通过本地 HTTP 服务器打开（在项目目录执行 <code>python3 -m http.server 8000</code> 后访问 http://localhost:8000 ）。加载较慢属正常（初始化 WASM）。</span>
+</footer>
+
+<!-- 顺序加载：库先就位，再加载应用脚本 -->
+<script src="libs/keystone.js"></script>
+<script src="libs/unicorn_aarch64.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

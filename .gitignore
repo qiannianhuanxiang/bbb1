@@ -1,0 +1,18 @@
+# 操作系统 / 编辑器
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# 日志与临时
+*.log
+*.tmp
+__pycache__/
+
+# 依赖（本仓库自包含，无外部依赖；如未来引入则忽略）
+node_modules/
+
+# 注意：libs/ 下的 .wasm 是必需资源，需纳入版本库
